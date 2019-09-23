@@ -1,0 +1,153 @@
+<?php
+include("conexion.php");
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!--
+Project      : Datos de empleados con PHP, MySQLi y Bootstrap CRUD  (Create, read, Update, Delete) 
+Author		 : Obed Alvarado
+Website		 : http://www.obedalvarado.pw
+Blog         : https://obedalvarado.pw/blog/
+Email	 	 : info@obedalvarado.pw
+-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>AMV - Correspondencia</title>
+
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-datepicker.css" rel="stylesheet">
+	<link href="css/style_nav.css" rel="stylesheet">
+	<style>
+		.content {
+			margin-top: 80px;
+		}
+	</style>
+
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<?php include("nav.php");?>
+	</nav>
+	<div class="container">
+		<div class="content">
+			<h2>Usuarios &raquo; Agregar Usuario</h2>
+			<hr />
+
+			<?php
+			if(isset($_POST['add'])){
+				$idusuario		     = mysqli_real_escape_string($con,(strip_tags($_POST["idusuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$nombreUsuario		     = mysqli_real_escape_string($con,(strip_tags($_POST["nombreUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$apellidoUsuario	 = mysqli_real_escape_string($con,(strip_tags($_POST["apellidoUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$correoUsuario	 = mysqli_real_escape_string($con,(strip_tags($_POST["correoUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$dependenciaUsuario	     = mysqli_real_escape_string($con,(strip_tags($_POST["dependenciaUsuario"],ENT_QUOTES)));//Escanpando caracteres
+                $cargoUsuario	     = mysqli_real_escape_string($con,(strip_tags($_POST["cargoUsuario"],ENT_QUOTES)));//Escanpando caracteres
+				$ciudadUsuario	     = mysqli_real_escape_string($con,(strip_tags($_POST["ciudadUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$passwordUsuario		 = mysqli_real_escape_string($con,(strip_tags($_POST["passwordUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				
+				
+			
+
+				$cek = mysqli_query($con, "SELECT * FROM usuario WHERE idusuario='$idusuario'");
+				if(mysqli_num_rows($cek) == 0){
+						$insert = mysqli_query($con, "INSERT INTO usuario (idusuario, nombreUsuario, apellidoUsuario, correoUsuario, dependenciaUsuario, cargoUsuario, ciudadUsuario, passwordUsuario) VALUES ('$idusuario','$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$dependenciaUsuario', '$cargoUsuario', '$ciudadUsuario', '$passwordUsuario')") or die(mysqli_error());
+						if($insert){
+							echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Bien hecho! Los datos han sido guardados con éxito.</div>';
+						}else{
+							echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Error. No se pudo guardar los datos !</div>';
+						}
+					 
+				}else{
+					echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Error. código exite!</div>';
+				}
+			}
+			?>
+
+			<form class="form-horizontal" action="" method="post">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Id Usuario</label>
+					<div class="col-sm-4">
+						<input type="text" name="idusuario" class="form-control" placeholder="Digite cedula" required autocomplete="no">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Nombres</label>
+					<div class="col-sm-4">
+						<input type="text" name="nombreUsuario" class="form-control" placeholder="Escriba nombre completo" required autocomplete="no">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Apellidos</label>
+					<div class="col-sm-4">
+						<input type="text" name="apellidoUsuario" class="form-control" placeholder="Escriba apellidos" required autocomplete="no">
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label">E-mail</label>
+					<div class="col-sm-4">
+						<input type="email" name="correoUsuario" class="form-control" placeholder="Escriba correo electronico" required autocomplete="no">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Dependencia</label>
+					<div class="col-sm-4">
+						<input type="text" name="dependenciaUsuario" class="form-control" placeholder="Escriba Dependencia" required autocomplete="no">
+					</div>
+				</div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Cargo</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="cargoUsuario" class="form-control" placeholder="Escriba Cargo" required autocomplete="no">
+                    </div>
+                </div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Ciudad</label>
+					<div class="col-sm-4">
+						<select name="ciudadUsuario" class="form-control">
+							<option value=""> ----- </option>
+                           <option value="Barranquilla">Barranquilla</option>
+									<option value="Bogota">Bogota</option>
+									<option value="Bucaramanga">Bucaramanga</option>
+									<option value="Cali">Cali</option>
+									<option value="Cartagena">Cartagena</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Password</label>
+					<div class="col-sm-4">
+						<input type="password" name="passwordUsuario" class="form-control" placeholder="Digite password" required autocomplete="no">
+					</div>
+				</div>
+				
+				
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label">&nbsp;</label>
+					<div class="col-sm-6">
+						<input type="submit" name="add" class="btn btn-sm btn-primary" value="Guardar datos">
+						<a href="index.php" class="btn btn-sm btn-danger">Cancelar</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script>
+	$('.date').datepicker({
+		format: 'dd-mm-yyyy',
+	})
+	</script>
+</body>
+</html>

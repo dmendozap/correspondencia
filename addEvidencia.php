@@ -1,0 +1,100 @@
+<?php
+include("conexion.php");
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!--
+Project      : Datos de empleados con PHP, MySQLi y Bootstrap CRUD  (Create, read, Update, Delete) 
+Author		 : Obed Alvarado
+Website		 : http://www.obedalvarado.pw
+Blog         : https://obedalvarado.pw/blog/
+Email	 	 : info@obedalvarado.pw
+-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>AMV - Correspondencia</title>
+
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-datepicker.css" rel="stylesheet">
+	<link href="css/style_nav.css" rel="stylesheet">
+	<style>
+		.content {
+			margin-top: 80px;
+		}
+	</style>
+
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<?php include("nav.php");?>
+	</nav>
+	<div class="container">
+		<div class="content">
+			<h2>Documentos &raquo; Agregar Evidencia Entrega</h2>
+			<hr />
+
+			<?php
+			if(isset($_POST['add'])){
+				$idusuario		     = mysqli_real_escape_string($con,(strip_tags($_POST["idusuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$nombreUsuario		     = mysqli_real_escape_string($con,(strip_tags($_POST["nombreUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$apellidoUsuario	 = mysqli_real_escape_string($con,(strip_tags($_POST["apellidoUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$correoUsuario	 = mysqli_real_escape_string($con,(strip_tags($_POST["correoUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$dependenciaUsuario	     = mysqli_real_escape_string($con,(strip_tags($_POST["dependenciaUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$ciudadUsuario	     = mysqli_real_escape_string($con,(strip_tags($_POST["ciudadUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				$passwordUsuario		 = mysqli_real_escape_string($con,(strip_tags($_POST["passwordUsuario"],ENT_QUOTES)));//Escanpando caracteres 
+				
+				
+			
+
+				$cek = mysqli_query($con, "SELECT * FROM usuario WHERE idusuario='$idusuario'");
+				if(mysqli_num_rows($cek) == 0){
+						$insert = mysqli_query($con, "INSERT INTO usuario (idusuario, nombreUsuario, apellidoUsuario, correoUsuario, dependenciaUsuario, ciudadUsuario, passwordUsuario) VALUES ('$idusuario','$nombreUsuario', '$apellidoUsuario', '$correoUsuario', '$dependenciaUsuario', '$ciudadUsuario', '$passwordUsuario')") or die(mysqli_error());
+						if($insert){
+							echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Bien hecho! Los datos han sido guardados con éxito.</div>';
+						}else{
+							echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Error. No se pudo guardar los datos !</div>';
+						}
+					 
+				}else{
+					echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Error. código exite!</div>';
+				}
+			}
+			?>
+
+			<form class="form-horizontal" action="" method="post">
+				<div class="form-group">
+					<label  class="col-sm-3 control-label" for="img">Clic en el Boton para seleccionar la ubicacion del archivo</label>
+					<div class="col-sm-4">
+						<input type="file" name="idusuario" class="form-control" title="Buscar archivo..." required>
+					</div>
+				</div>	
+				
+	
+				<div class="form-group">
+					<label class="col-sm-3 control-label">&nbsp;</label>
+					<div class="col-sm-6">
+						<input type="submit" name="add" class="btn btn-sm btn-primary" value="Guardar Evidencia">
+						<a href="documentos.php" class="btn btn-sm btn-danger">Cancelar</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script>
+	$('.date').datepicker({
+		format: 'dd-mm-yyyy',
+	})
+	</script>
+</body>
+</html>
